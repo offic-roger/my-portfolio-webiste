@@ -29,6 +29,10 @@ export const metadata: Metadata = {
     "video editor Tanzania",
     "UX UI designer Africa",
   ],
+  icons: {
+    icon: "/images/logo.jpeg",
+    apple: "/images/logo.jpeg",
+  },
   openGraph: {
     title: "Official Roger | Designer, Animator & Motion",
     description:

@@ -177,10 +177,10 @@ export default function WorkBento() {
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* ═══ ROW 1: GRAPHIC DESIGN & BRANDING — full width with 3D book-fan cards ═══ */}
-          <Link href="/portfolio/branding" className="block col-span-1 md:col-span-2">
+          <Link href="/portfolio/branding" className="block h-full col-span-1 md:col-span-2">
           <div
             ref={formCardRef}
-            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[400px] md:min-h-[520px] group"
+            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[400px] md:min-h-[520px] h-full group"
             style={{ background: "#0A0A0A" }}
           >
             {/* Left side: Title + Description */}
@@ -303,12 +303,12 @@ export default function WorkBento() {
           </Link>
 
           {/* ═══ ROW 2 RIGHT TOP: MOTION GRAPHICS ═══ */}
-          <Link href="/portfolio/motion-graphics" className="block">
+          <Link href="/portfolio/motion-graphics" className="block h-full">
           <div
             ref={(el) => {
               if (el) cardsRef.current[1] = el;
             }}
-            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[280px] group"
+            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[280px] h-full group"
           >
             <video
               src="/videos/thumbnails/motion-graphics.mp4"
@@ -335,7 +335,7 @@ export default function WorkBento() {
             ref={(el) => {
               if (el) cardsRef.current[2] = el;
             }}
-            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[280px] group"
+            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[280px] h-full group"
           >
             <video
               src="/videos/thumbnails/video-editing.mp4"
@@ -357,11 +357,12 @@ export default function WorkBento() {
           </div>
 
           {/* ═══ ROW 3 LEFT: UX / UI — Purple ═══ */}
+          <Link href="/portfolio/uiux" className="block h-full">
           <div
             ref={(el) => {
               if (el) cardsRef.current[3] = el;
             }}
-            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[250px] group flex flex-col justify-between"
+            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[250px] h-full group flex flex-col justify-between cursor-pointer"
             style={{ background: "#5A2DC9" }}
           >
             <div className="absolute top-6 left-6 md:top-8 md:left-8 z-[2]">
@@ -381,14 +382,15 @@ export default function WorkBento() {
               </p>
             </div>
           </div>
+          </Link>
 
           {/* ═══ ROW 3 RIGHT: 3D & AI VIDEO ═══ */}
-          <Link href="/portfolio/3d-ai-video" className="block">
+          <Link href="/portfolio/3d-ai-video" className="block h-full">
           <div
             ref={(el) => {
               if (el) cardsRef.current[4] = el;
             }}
-            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[250px] group"
+            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[250px] h-full group"
           >
             <video
               src="/videos/thumbnails/3d-animation.mp4"
