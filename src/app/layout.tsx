@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import FloatingActions from "@/components/FloatingActions";
 
 import { Inter } from "next/font/google";
 
@@ -53,6 +54,7 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <FloatingActions />
       </body>
     </html>
   );

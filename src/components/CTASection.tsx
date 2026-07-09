@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { prefersReducedMotion, createWordReveal } from "@/lib/animations";
@@ -40,6 +40,71 @@ export default function CTASection() {
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
   const cardRefs = useRef<HTMLDivElement[]>([]);
+
+  // Form states
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    service: "",
+    budget: "",
+    message: "",
+    source: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [statusMessage, setStatusMessage] = useState("");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+    setStatusMessage("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setSubmitStatus("success");
+        setStatusMessage(data.message || "Ujumbe wako umetumwa kwa ufanisi!");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          service: "",
+          budget: "",
+          message: "",
+          source: "",
+        });
+      } else {
+        setSubmitStatus("error");
+        setStatusMessage(data.error || "Ujumbe haukutumwa. Tafadhali jaribu tena.");
+      }
+    } catch (err) {
+      console.error("Form submit error:", err);
+      setSubmitStatus("error");
+      setStatusMessage("Samahani, kuna tatizo la mtandao. Tafadhali jaribu tena.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // Magnetic cursor effect for button
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -244,25 +309,54 @@ export default function CTASection() {
 
         {/* Form Container */}
         <div className="relative z-[3] max-w-[700px] mx-auto bg-[#0A0A0A]/80 backdrop-blur-md border border-white/10 rounded-card-lg p-8 md:p-12">
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex flex-col gap-2">
               <label className="text-white/80 text-[13px] tracking-wide uppercase">Full Name *</label>
-              <input type="text" className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors" required />
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors"
+                required
+                disabled={isSubmitting}
+              />
             </div>
             
             <div className="flex flex-col gap-2">
               <label className="text-white/80 text-[13px] tracking-wide uppercase">Email Address *</label>
-              <input type="email" className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors" required />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors"
+                required
+                disabled={isSubmitting}
+              />
             </div>
 
             <div className="flex flex-col gap-2 md:col-span-2">
               <label className="text-white/80 text-[13px] tracking-wide uppercase">Phone / WhatsApp Number</label>
-              <input type="tel" className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors" />
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors"
+                disabled={isSubmitting}
+              />
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-white/80 text-[13px] tracking-wide uppercase">Service Needed</label>
-              <select className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors [&>option]:bg-[#0A0A0A]">
+              <select
+                name="service"
+                value={formData.service}
+                onChange={handleChange}
+                className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors [&>option]:bg-[#0A0A0A]"
+                disabled={isSubmitting}
+              >
                 <option value="">Select a service...</option>
                 <option value="graphic_design">Graphic Design</option>
                 <option value="video_editing">Video Editing</option>
@@ -276,7 +370,13 @@ export default function CTASection() {
 
             <div className="flex flex-col gap-2">
               <label className="text-white/80 text-[13px] tracking-wide uppercase">Estimated Budget</label>
-              <select className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors [&>option]:bg-[#0A0A0A]">
+              <select
+                name="budget"
+                value={formData.budget}
+                onChange={handleChange}
+                className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors [&>option]:bg-[#0A0A0A]"
+                disabled={isSubmitting}
+              >
                 <option value="">Select range...</option>
                 <option value="under_100">Under $100</option>
                 <option value="100_500">$100 - $500</option>
@@ -287,21 +387,49 @@ export default function CTASection() {
 
             <div className="flex flex-col gap-2 md:col-span-2 mt-4">
               <label className="text-white/80 text-[13px] tracking-wide uppercase">Project Description *</label>
-              <textarea rows={4} className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors resize-none" required></textarea>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows={4}
+                className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors resize-none"
+                required
+                disabled={isSubmitting}
+              ></textarea>
             </div>
 
             <div className="flex flex-col gap-2 md:col-span-2">
               <label className="text-white/80 text-[13px] tracking-wide uppercase">How did you hear about me?</label>
-              <input type="text" className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors" />
+              <input
+                type="text"
+                name="source"
+                value={formData.source}
+                onChange={handleChange}
+                className="bg-transparent border-b border-white/20 pb-2 text-white outline-none focus:border-[#E25822] transition-colors"
+                disabled={isSubmitting}
+              />
             </div>
+
+            {submitStatus !== "idle" && (
+              <div
+                className={`md:col-span-2 p-4 rounded-card text-sm font-semibold border ${
+                  submitStatus === "success"
+                    ? "bg-[#D9FF5C]/10 border-[#D9FF5C]/20 text-[#D9FF5C]"
+                    : "bg-red-500/10 border-red-500/20 text-red-400"
+                }`}
+              >
+                {statusMessage}
+              </div>
+            )}
 
             <div className="md:col-span-2 mt-8 text-center">
               <button
                 ref={btnRef}
                 type="submit"
-                className="btn-pill btn-pill-lime inline-flex text-[14px]"
+                disabled={isSubmitting}
+                className="btn-pill btn-pill-lime inline-flex text-[14px] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                SEND MESSAGE
+                {isSubmitting ? "SENDING..." : "SEND MESSAGE"}
               </button>
             </div>
           </form>
