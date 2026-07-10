@@ -35,21 +35,6 @@ body {
   color: var(--text-white);
   overflow-x: hidden;
   font-family: var(--font-body), system-ui, sans-serif;
-  cursor: none;
-}
-
-/* Hide default cursor on desktop */
-@media (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-}
-
-/* Show default cursor on touch devices */
-@media (pointer: coarse) {
-  * {
-    cursor: auto !important;
-  }
 }
 
 /* ═══ CUSTOM CURSOR ═══ */
