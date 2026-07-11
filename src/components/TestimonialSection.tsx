@@ -42,26 +42,28 @@ export default function TestimonialSection() {
   useEffect(() => {
     if (prefersReducedMotion()) return;
 
-    const mm = gsap.matchMedia();
+    const ctx = gsap.context(() => {
+      const container = containerRef.current;
+      if (!container) return;
 
-    mm.add("(min-width: 768px)", () => {
-      const cards = gsap.utils.toArray(".testimonial-card");
-      
-      // Horizontal scroll setup
-      gsap.to(cards, {
-        xPercent: -100 * (cards.length - 1),
+      const getScrollAmount = () => {
+        return container.offsetWidth - window.innerWidth;
+      };
+
+      gsap.to(container, {
+        x: () => -getScrollAmount(),
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
           pin: true,
           scrub: 1,
-          snap: 1 / (cards.length - 1),
-          end: () => "+=" + containerRef.current?.offsetWidth,
+          invalidateOnRefresh: true,
+          end: () => "+=" + getScrollAmount(),
         }
       });
     });
 
-    return () => mm.revert();
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -73,12 +75,12 @@ export default function TestimonialSection() {
 
       <div 
         ref={containerRef} 
-        className="flex flex-nowrap overflow-x-auto md:overflow-x-visible snap-x snap-mandatory no-scrollbar w-full md:w-max px-6 md:px-0 md:pl-[max(24px,calc((100vw-1200px)/2+24px))] pb-8 md:pb-0"
+        className="flex flex-nowrap w-max pl-[max(24px,calc((100vw-1200px)/2+24px))]"
       >
         {TESTIMONIALS.map((t, i) => (
           <div 
             key={i} 
-            className="testimonial-card snap-center flex-shrink-0 w-[85vw] md:w-[600px] lg:w-[800px] mr-6 md:mr-8 border border-white/10 rounded-card p-8 md:p-12 bg-[#0A0A0A] flex flex-col justify-between"
+            className="testimonial-card flex-shrink-0 w-[85vw] md:w-[600px] lg:w-[800px] mr-6 md:mr-8 border border-white/10 rounded-card p-8 md:p-12 bg-[#0A0A0A] flex flex-col justify-between"
             style={{ minHeight: "360px" }}
           >
             <p className="text-white/90 text-lg md:text-2xl leading-relaxed mb-10 font-medium">"{t.quote}"</p>

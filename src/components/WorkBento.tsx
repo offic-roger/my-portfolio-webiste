@@ -89,9 +89,9 @@ export default function WorkBento() {
         });
       }
 
-      // Continuous 3D Carousel rotation (desktop only)
+      // Continuous 3D Carousel rotation
       const carouselEl = (cardsRef as any).carouselRef;
-      if (carouselEl && window.innerWidth >= 768) {
+      if (carouselEl) {
         gsap.to(carouselEl, {
           rotationY: -360,
           duration: 35, // 35 seconds for a smooth, slow full loop
@@ -180,9 +180,32 @@ export default function WorkBento() {
           <Link href="/portfolio/branding" className="block h-full col-span-1 md:col-span-2">
           <div
             ref={formCardRef}
-            className="bento-card relative rounded-card border border-white/10 overflow-hidden flex flex-col md:block min-h-[460px] md:min-h-[520px] h-full group"
+            className="bento-card branding-bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[460px] md:min-h-[520px] h-full group"
             style={{ background: "#0A0A0A" }}
           >
+            <style dangerouslySetInnerHTML={{ __html: `
+              .branding-bento-card {
+                --carousel-radius: 220px;
+                --carousel-card-w: clamp(160px, 16vw, 220px);
+                --carousel-card-h: clamp(240px, 25vw, 330px);
+              }
+              @media (max-width: 767px) {
+                .branding-bento-card {
+                  --carousel-radius: 110px;
+                  --carousel-card-w: 105px;
+                  --carousel-card-h: 155px;
+                }
+                .bento-carousel-container {
+                  top: 170px !important;
+                  bottom: 0 !important;
+                  width: 100% !important;
+                  right: 0 !important;
+                  left: 0 !important;
+                  height: 220px !important;
+                }
+              }
+            `}} />
+            
             {/* Title + Description */}
             <div className="p-6 md:p-0 md:absolute md:top-10 md:left-10 z-[3] md:max-w-[340px]">
               <h3 className="font-display text-white text-[40px] md:text-[64px] leading-none mb-3">
@@ -193,9 +216,9 @@ export default function WorkBento() {
               </p>
             </div>
 
-            {/* Continuous 3D Rotating Carousel (Desktop only) */}
+            {/* Continuous 3D Rotating Carousel (Responsive) */}
             <div
-              className="hidden md:block absolute right-0 top-0 bottom-0 w-[70%] md:w-[65%]"
+              className="bento-carousel-container absolute right-0 top-0 bottom-0 w-[70%] md:w-[65%]"
               style={{ perspective: "1200px" }}
             >
               <div
@@ -207,18 +230,17 @@ export default function WorkBento() {
               >
                 {FORM_CARDS.map((card, i) => {
                   const angle = i * (360 / FORM_CARDS.length);
-                  const radius = 220; // Distance from center
 
                   return (
                     <div
                       key={i}
                       className="form-fan-card absolute"
                       style={{
-                        width: "clamp(160px, 16vw, 220px)",
-                        height: "clamp(240px, 25vw, 330px)",
+                        width: "var(--carousel-card-w)",
+                        height: "var(--carousel-card-h)",
                         transform: `
                           rotateY(${angle}deg) 
-                          translateZ(${radius}px)
+                          translateZ(var(--carousel-radius))
                         `,
                         borderRadius: "12px",
                         overflow: "hidden",
@@ -259,36 +281,6 @@ export default function WorkBento() {
                   );
                 })}
               </div>
-            </div>
-
-            {/* Mobile Native Horizontal Scroll Track (Mobile only) */}
-            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory w-full px-6 pb-8 md:hidden mt-auto no-scrollbar">
-              {FORM_CARDS.map((card, i) => (
-                <div
-                  key={i}
-                  className="flex-shrink-0 w-[150px] h-[220px] relative rounded-[12px] overflow-hidden snap-center border border-white/10 shadow-lg"
-                >
-                  <Image
-                    src={card.src}
-                    alt={card.alt}
-                    fill
-                    className="object-cover"
-                    sizes="150px"
-                    quality={80}
-                  />
-                  {/* Sheen effect */}
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background: `linear-gradient(
-                        135deg, 
-                        rgba(147,51,234,0.1) 0%, 
-                        transparent 70%
-                      )`,
-                    }}
-                  />
-                </div>
-              ))}
             </div>
 
             {/* Ambient glow behind cards */}

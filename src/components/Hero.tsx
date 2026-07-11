@@ -208,6 +208,48 @@ export default function Hero() {
       className="relative w-full h-screen overflow-hidden bg-bg-hero"
       style={{ zIndex: 10 }}
     >
+      <style dangerouslySetInnerHTML={{ __html: `
+        .hero-title-zera {
+          top: 15%;
+          left: clamp(24px, 4vw, 64px);
+          font-size: clamp(60px, 11vw, 180px);
+        }
+        .hero-title-studio {
+          bottom: 5%;
+          right: clamp(24px, 4vw, 64px);
+          font-size: clamp(80px, 13vw, 220px);
+        }
+        .hero-tagline-container {
+          bottom: 38%;
+          left: clamp(24px, 4vw, 64px);
+        }
+        .hero-cta-container {
+          bottom: 22%;
+          left: clamp(24px, 4vw, 64px);
+        }
+        @media (max-width: 767px) {
+          .hero-title-zera {
+            top: 18% !important;
+            left: clamp(24px, 4vw, 64px) !important;
+            font-size: clamp(50px, 12vw, 85px) !important;
+          }
+          .hero-title-studio {
+            top: 25.5% !important;
+            bottom: auto !important;
+            left: clamp(24px, 4vw, 64px) !important;
+            right: auto !important;
+            font-size: clamp(60px, 14vw, 105px) !important;
+          }
+          .hero-tagline-container {
+            bottom: 35% !important;
+            left: clamp(24px, 4vw, 64px) !important;
+          }
+          .hero-cta-container {
+            bottom: 22% !important;
+            left: clamp(24px, 4vw, 64px) !important;
+          }
+        }
+      `}} />
       {/* Background Video */}
       <div className="absolute inset-0 z-0 bg-black">
         <video
@@ -287,11 +329,8 @@ export default function Hero() {
       {/* OFFICIAL — top left */}
       <h1
         ref={zeraRef}
-        className="absolute z-10 font-display text-white"
+        className="absolute z-10 font-display text-white hero-title-zera"
         style={{
-          top: "15%",
-          left: "clamp(24px, 4vw, 64px)",
-          fontSize: "clamp(60px, 11vw, 180px)",
           lineHeight: 0.85,
           letterSpacing: "-0.02em",
         }}
@@ -302,11 +341,8 @@ export default function Hero() {
       {/* ROGER — bottom right */}
       <h2
         ref={studioRef}
-        className="absolute z-10 font-display text-white"
+        className="absolute z-10 font-display text-white hero-title-studio"
         style={{
-          bottom: "5%",
-          right: "clamp(24px, 4vw, 64px)",
-          fontSize: "clamp(80px, 13vw, 220px)",
           lineHeight: 0.85,
           letterSpacing: "-0.02em",
         }}
@@ -317,8 +353,7 @@ export default function Hero() {
       {/* Eyebrow + Tagline */}
       <div
         ref={eyebrowRef}
-        className="absolute z-10"
-        style={{ bottom: "38%", left: "clamp(24px, 4vw, 64px)" }}
+        className="absolute z-10 hero-tagline-container"
       >
         <p className="eyebrow text-white/70 mb-1">Official Roger</p>
         <p className="text-[15px] text-white/90 font-body max-w-[400px]">
@@ -354,8 +389,7 @@ export default function Hero() {
 
       {/* CTA Button */}
       <div
-        className="absolute z-10 flex gap-4"
-        style={{ bottom: "22%", left: "clamp(24px, 4vw, 64px)" }}
+        className="absolute z-10 flex gap-4 hero-cta-container"
       >
         <Magnetic strength={30}>
           <a
