@@ -229,24 +229,40 @@ export default function Hero() {
         }
         @media (max-width: 767px) {
           .hero-title-zera {
-            top: 18% !important;
-            left: clamp(24px, 4vw, 64px) !important;
-            font-size: clamp(50px, 12vw, 85px) !important;
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            margin-top: 135px !important;
+            margin-left: clamp(24px, 4vw, 64px) !important;
+            font-size: clamp(45px, 11vw, 75px) !important;
+            display: block !important;
           }
           .hero-title-studio {
-            top: 25.5% !important;
+            position: relative !important;
+            top: auto !important;
             bottom: auto !important;
-            left: clamp(24px, 4vw, 64px) !important;
+            left: auto !important;
             right: auto !important;
-            font-size: clamp(60px, 14vw, 105px) !important;
+            margin-top: 6px !important;
+            margin-left: clamp(24px, 4vw, 64px) !important;
+            font-size: clamp(55px, 13vw, 95px) !important;
+            display: block !important;
           }
           .hero-tagline-container {
-            bottom: 35% !important;
-            left: clamp(24px, 4vw, 64px) !important;
+            position: relative !important;
+            bottom: auto !important;
+            left: auto !important;
+            margin-top: 24px !important;
+            margin-left: clamp(24px, 4vw, 64px) !important;
+            display: block !important;
           }
           .hero-cta-container {
-            bottom: 22% !important;
-            left: clamp(24px, 4vw, 64px) !important;
+            position: relative !important;
+            bottom: auto !important;
+            left: auto !important;
+            margin-top: 32px !important;
+            margin-left: clamp(24px, 4vw, 64px) !important;
+            display: flex !important;
           }
         }
       `}} />
