@@ -196,7 +196,7 @@ export default function FloatingActions() {
       {/* ── AI Chat Popup Window ── */}
       {isOpen && (
         <div
-          className="fixed bottom-24 right-6 z-[9999] w-[350px] sm:w-[380px] h-[500px] flex flex-col rounded-[24px] overflow-hidden border border-white/10 shadow-2xl transition-all duration-300"
+          className="fixed bottom-24 right-4 left-4 sm:right-6 sm:left-auto z-[9999] w-auto sm:w-[380px] h-[500px] max-h-[70vh] sm:max-h-[500px] flex flex-col rounded-[24px] overflow-hidden border border-white/10 shadow-2xl transition-all duration-300"
           style={{ background: "rgba(10, 10, 10, 0.9)", backdropFilter: "blur(20px)" }}
         >
           {/* Header */}

@@ -233,13 +233,52 @@ export default function UiUxPage() {
                     </span>
                   </div>
 
-                  <div className="flex-1 relative rounded-b-[10px] overflow-hidden flex items-center justify-center">
+                  <div className="flex-1 relative rounded-b-[10px] overflow-hidden flex items-center justify-center min-h-[300px]">
                     {proj.isPdf ? (
-                      <iframe
-                        src={`${proj.fileSrc}#toolbar=0`}
-                        className="w-full h-full border-none absolute inset-0 bg-[#1e1e1e]"
-                        title="UI/UX Case Study Interactive PDF Preview"
-                      />
+                      <>
+                        {/* Desktop PDF Iframe Preview */}
+                        <iframe
+                          src={`${proj.fileSrc}#toolbar=0`}
+                          className="w-full h-full border-none absolute inset-0 bg-[#1e1e1e] hidden lg:block"
+                          title="UI/UX Case Study Interactive PDF Preview"
+                        />
+                        {/* Mobile Fallback Card */}
+                        <div className="flex flex-col items-center justify-center p-6 text-center lg:hidden bg-gradient-to-br from-[#111] to-[#050505] absolute inset-0">
+                          <div className="w-14 h-14 rounded-full flex items-center justify-center bg-[#D9FF5C]/10 border border-[#D9FF5C]/20 mb-3 text-[#D9FF5C]">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                              <polyline points="14 2 14 8 20 8" />
+                              <line x1="16" y1="13" x2="8" y2="13" />
+                              <line x1="16" y1="17" x2="8" y2="17" />
+                              <polyline points="10 9 9 9 8 9" />
+                            </svg>
+                          </div>
+                          <h4 className="text-white font-semibold text-[14px] mb-1.5 uppercase tracking-wider">
+                            Interactive Case Study PDF
+                          </h4>
+                          <p className="text-white/50 text-[12px] max-w-[280px] leading-relaxed mb-5">
+                            Mobile browsers cannot view inline PDFs directly. Tap below to view or download the full GoalNow case study.
+                          </p>
+                          <div className="flex flex-col xs:flex-row gap-3.5 w-full max-w-[280px]">
+                            <a
+                              href={proj.fileSrc}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 px-4 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-center"
+                              style={{ background: ACCENT, color: "#000" }}
+                            >
+                              View PDF
+                            </a>
+                            <a
+                              href={proj.fileSrc}
+                              download
+                              className="flex-1 px-4 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/20 text-white hover:bg-white/5 text-center transition-colors duration-200"
+                            >
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      </>
                     ) : (
                       <div className="flex flex-col items-center justify-center p-8 text-center">
                         <div className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 mb-4 border border-white/10">

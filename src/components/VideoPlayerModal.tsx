@@ -41,6 +41,7 @@ export default function VideoPlayerModal({
   const [hoverRating, setHoverRating] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
+  const [isVertical, setIsVertical] = useState(false);
 
   /* ── Entrance animation ── */
   useEffect(() => {
@@ -74,7 +75,12 @@ export default function VideoPlayerModal({
     const onPlay = () => setIsPlaying(true);
     const onPause = () => setIsPlaying(false);
     const onTime = () => setCurrentTime(v.currentTime);
-    const onMeta = () => setDuration(v.duration);
+    const onMeta = () => {
+      setDuration(v.duration);
+      if (v.videoHeight > v.videoWidth) {
+        setIsVertical(true);
+      }
+    };
     v.addEventListener("play", onPlay);
     v.addEventListener("pause", onPause);
     v.addEventListener("timeupdate", onTime);
@@ -170,11 +176,11 @@ export default function VideoPlayerModal({
       <div
         ref={modalRef}
         className="relative z-10 w-full rounded-[20px] overflow-hidden"
-        style={{ maxWidth: 900, background: "#0f0f0f", boxShadow: "0 40px 120px rgba(0,0,0,0.9)" }}
+        style={{ maxWidth: isVertical ? 420 : 900, background: "#0f0f0f", boxShadow: "0 40px 120px rgba(0,0,0,0.9)" }}
         onMouseMove={showControls}
       >
         {/* Video area */}
-        <div className="relative aspect-video bg-black">
+        <div className={`relative bg-black ${isVertical ? "aspect-[9/16] max-h-[70vh] sm:max-h-[80vh] mx-auto" : "aspect-video"}`}>
           <video
             ref={videoRef}
             src={src}

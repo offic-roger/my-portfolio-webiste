@@ -241,13 +241,13 @@ export default function BrandingPage() {
             style={{ maxWidth: 900 }}
           >
             {/* Image */}
-            <div className="relative w-full rounded-[16px] overflow-hidden" style={{ aspectRatio: "4/3", background: "#111" }}>
+            <div className="relative w-full h-[55vh] md:h-[75vh] rounded-[16px] overflow-hidden bg-[#111]">
               <Image
                 src={IMAGES[lightbox].src}
                 alt={IMAGES[lightbox].title}
                 fill
                 className="object-contain"
-                sizes="900px"
+                sizes="(max-width: 1024px) 100vw, 900px"
                 quality={90}
               />
             </div>

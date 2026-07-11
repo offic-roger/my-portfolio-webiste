@@ -126,12 +126,14 @@ export default function Hero() {
     return () => ctx.revert();
   }, []);
 
-  // Pin hero
+  // Pin hero only on desktop (>=768px)
   useEffect(() => {
     if (!heroRef.current) return;
     if (prefersReducedMotion()) return;
 
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
       ScrollTrigger.create({
         trigger: heroRef.current,
         start: "top top",
@@ -141,8 +143,20 @@ export default function Hero() {
       });
     });
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   const renderLetters = (text: string) => {
     return text.split("").map((letter, i) => (
@@ -229,7 +243,7 @@ export default function Hero() {
           <Magnetic strength={20}>
             <a
               href="#work"
-              className="btn-pill-outline text-[11px] px-4 py-2 rounded-full border border-white/20 backdrop-blur-sm tracking-eyebrow hover:bg-white/10 transition-colors"
+              className="btn-pill-outline text-[11px] px-4 py-2 rounded-full border border-white/20 backdrop-blur-sm tracking-eyebrow hover:bg-white/10 transition-colors hidden sm:inline-block"
             >
               PROJECTS
             </a>

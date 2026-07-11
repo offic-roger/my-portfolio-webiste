@@ -42,7 +42,9 @@ export default function TestimonialSection() {
   useEffect(() => {
     if (prefersReducedMotion()) return;
 
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
       const cards = gsap.utils.toArray(".testimonial-card");
       
       // Horizontal scroll setup
@@ -59,7 +61,7 @@ export default function TestimonialSection() {
       });
     });
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (
@@ -69,11 +71,14 @@ export default function TestimonialSection() {
         <h3 className="font-display text-white text-[48px] md:text-[64px] leading-none">CLIENT<br/>STORIES</h3>
       </div>
 
-      <div ref={containerRef} className="flex flex-nowrap w-max pl-[max(24px,calc((100vw-1200px)/2+24px))]">
+      <div 
+        ref={containerRef} 
+        className="flex flex-nowrap overflow-x-auto md:overflow-x-visible snap-x snap-mandatory no-scrollbar w-full md:w-max px-6 md:px-0 md:pl-[max(24px,calc((100vw-1200px)/2+24px))] pb-8 md:pb-0"
+      >
         {TESTIMONIALS.map((t, i) => (
           <div 
             key={i} 
-            className="testimonial-card w-[85vw] md:w-[600px] lg:w-[800px] mr-8 border border-white/10 rounded-card p-8 md:p-12 bg-[#0A0A0A] flex flex-col justify-between"
+            className="testimonial-card snap-center flex-shrink-0 w-[85vw] md:w-[600px] lg:w-[800px] mr-6 md:mr-8 border border-white/10 rounded-card p-8 md:p-12 bg-[#0A0A0A] flex flex-col justify-between"
             style={{ minHeight: "360px" }}
           >
             <p className="text-white/90 text-lg md:text-2xl leading-relaxed mb-10 font-medium">"{t.quote}"</p>

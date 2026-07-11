@@ -24,9 +24,10 @@ export default function IntentSection() {
     )
       return;
 
-    const ctx = gsap.context(() => {
-      // ═══ MASTER SCROLL-DRIVEN TIMELINE ═══
-      // Total scroll distance: 500% of viewport height
+    const mm = gsap.matchMedia();
+
+    // Desktop pinning
+    mm.add("(min-width: 768px)", () => {
       const masterTl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -37,14 +38,25 @@ export default function IntentSection() {
           pinSpacing: true,
         },
       });
+      setupTimeline(masterTl);
+    });
 
-      // ────────────────────────────────────────────
-      // PHASE 1 (0 → 0.25): Text lines animate in
-      // "ZERA STUDIO · JERRY" is already visible (no animation)
-      // "DISCOVER CRAFT THAT" rises from below+right with rotation
-      // "FEELS INTENTIONAL" follows shortly after
-      // ────────────────────────────────────────────
+    // Mobile pinning (much shorter scroll height)
+    mm.add("(max-width: 767px)", () => {
+      const masterTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=200%",
+          pin: pinContainerRef.current,
+          scrub: 1,
+          pinSpacing: true,
+        },
+      });
+      setupTimeline(masterTl);
+    });
 
+    function setupTimeline(masterTl: gsap.core.Timeline) {
       if (line1Ref.current) {
         masterTl.fromTo(
           line1Ref.current,
@@ -79,16 +91,9 @@ export default function IntentSection() {
         );
       }
 
-      // ────────────────────────────────────────────
-      // PHASE 2 (0.35 → 0.85): Image grows to fill screen
-      // The description text also fades out as image grows
-      // ────────────────────────────────────────────
-
       if (cardRef.current) {
-        // Calculate exact scale so the card fills the viewport without overflow.
-        // Using Math.min ensures the full video is visible (contain behaviour).
-        const cardW = cardRef.current.offsetWidth;
-        const cardH = cardRef.current.offsetHeight;
+        const cardW = cardRef.current.offsetWidth || 600;
+        const cardH = cardRef.current.offsetHeight || 337;
         const scaleW = window.innerWidth / cardW;
         const scaleH = window.innerHeight / cardH;
         const targetScale = Math.min(scaleW, scaleH);
@@ -109,7 +114,6 @@ export default function IntentSection() {
         );
       }
 
-      // ── Text elements fade out as image grows ──
       // Eyebrow
       if (eyebrowRef.current) {
         masterTl.to(
@@ -152,9 +156,9 @@ export default function IntentSection() {
           0.38
         );
       }
-    });
+    }
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (

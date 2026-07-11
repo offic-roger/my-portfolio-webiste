@@ -89,9 +89,9 @@ export default function WorkBento() {
         });
       }
 
-      // Continuous 3D Carousel rotation
+      // Continuous 3D Carousel rotation (desktop only)
       const carouselEl = (cardsRef as any).carouselRef;
-      if (carouselEl) {
+      if (carouselEl && window.innerWidth >= 768) {
         gsap.to(carouselEl, {
           rotationY: -360,
           duration: 35, // 35 seconds for a smooth, slow full loop
@@ -180,12 +180,12 @@ export default function WorkBento() {
           <Link href="/portfolio/branding" className="block h-full col-span-1 md:col-span-2">
           <div
             ref={formCardRef}
-            className="bento-card relative rounded-card border border-white/10 overflow-hidden min-h-[400px] md:min-h-[520px] h-full group"
+            className="bento-card relative rounded-card border border-white/10 overflow-hidden flex flex-col md:block min-h-[460px] md:min-h-[520px] h-full group"
             style={{ background: "#0A0A0A" }}
           >
-            {/* Left side: Title + Description */}
-            <div className="absolute top-6 left-6 md:top-10 md:left-10 z-[3] max-w-[340px]">
-              <h3 className="font-display text-white text-[48px] md:text-[64px] leading-none mb-3">
+            {/* Title + Description */}
+            <div className="p-6 md:p-0 md:absolute md:top-10 md:left-10 z-[3] md:max-w-[340px]">
+              <h3 className="font-display text-white text-[40px] md:text-[64px] leading-none mb-3">
                 BRANDING
               </h3>
               <p className="text-white/70 text-[14px] md:text-[15px] leading-relaxed">
@@ -193,9 +193,9 @@ export default function WorkBento() {
               </p>
             </div>
 
-            {/* Continuous 3D Rotating Carousel */}
+            {/* Continuous 3D Rotating Carousel (Desktop only) */}
             <div
-              className="absolute right-0 top-0 bottom-0 w-[70%] md:w-[65%]"
+              className="hidden md:block absolute right-0 top-0 bottom-0 w-[70%] md:w-[65%]"
               style={{ perspective: "1200px" }}
             >
               <div
@@ -259,6 +259,36 @@ export default function WorkBento() {
                   );
                 })}
               </div>
+            </div>
+
+            {/* Mobile Native Horizontal Scroll Track (Mobile only) */}
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory w-full px-6 pb-8 md:hidden mt-auto no-scrollbar">
+              {FORM_CARDS.map((card, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 w-[150px] h-[220px] relative rounded-[12px] overflow-hidden snap-center border border-white/10 shadow-lg"
+                >
+                  <Image
+                    src={card.src}
+                    alt={card.alt}
+                    fill
+                    className="object-cover"
+                    sizes="150px"
+                    quality={80}
+                  />
+                  {/* Sheen effect */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background: `linear-gradient(
+                        135deg, 
+                        rgba(147,51,234,0.1) 0%, 
+                        transparent 70%
+                      )`,
+                    }}
+                  />
+                </div>
+              ))}
             </div>
 
             {/* Ambient glow behind cards */}
