@@ -353,6 +353,7 @@ export default function WorkBento() {
           </Link>
 
           {/* ═══ ROW 2 RIGHT BOTTOM: VIDEO EDITING ═══ */}
+          <Link href="/portfolio/video-editing" className="block h-full">
           <div
             ref={(el) => {
               if (el) cardsRef.current[2] = el;
@@ -377,6 +378,7 @@ export default function WorkBento() {
               </p>
             </div>
           </div>
+          </Link>
 
           {/* ═══ ROW 3 LEFT: UX / UI — Purple ═══ */}
           <Link href="/portfolio/uiux" className="block h-full">
